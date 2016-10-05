@@ -1,10 +1,18 @@
 package Test::Locale::Maketext::Lexicon::JSON;
 use parent qw(Locale::Maketext);
-use Locale::Maketext::Lexicon {
-    (map { $_ => [ JSON => "t/data/$_.json", ], } qw( en_US ja_JP)),
-        _decode  => 1,
-        _preload => 1,
-};
+use Locale::Maketext::Lexicon ();
+
+sub import {
+    my $class = shift;
+
+    my %locales = map { $_ => [ JSON => "t/data/$_.json", ], } qw( en_US ja_JP);
+    Locale::Maketext::Lexicon->import(
+        {   %locales,
+            _decode  => 1,
+            _preload => 1,
+        }
+    );
+}
 
 package main;
 use strict;
@@ -28,6 +36,8 @@ subtest parse => sub {
 };
 
 subtest 'get_handle for locales' => sub {
+    Test::Locale::Maketext::Lexicon::JSON->import;
+
     subtest en_US => sub {
         my $i18n = Test::Locale::Maketext::Lexicon::JSON->get_handle('en_US');
 
