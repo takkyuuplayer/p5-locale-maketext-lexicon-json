@@ -1,0 +1,1 @@
+# p5-locale-maketext-lexicon-json
